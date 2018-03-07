@@ -12,3 +12,5 @@ Companion code to [How Docker Can Help You Become A More Effective Data Scientis
 ### Contributing
 
 Pull requests, comments, issues, etc. are welcome!  
+
+For more useful commands check this link : [Docker Cheatsheets](https://github.com/anoru/awesome-cheatsheets/blob/master/tools/docker.sh)
