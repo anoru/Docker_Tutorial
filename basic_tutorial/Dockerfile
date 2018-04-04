@@ -23,14 +23,12 @@ RUN apt-get update --fix-missing && apt-get install -y wget bzip2 ca-certificate
     python-setuptools \
     python-virtualenv \
     unzip \
-    && \
-apt-get clean && \
-rm -rf /var/lib/apt/lists/*
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
-    wget --quiet https://repo.continuum.io/archive/Anaconda3-5.0.0.1-Linux-x86_64.sh -O ~/anaconda.sh && \
-    /bin/bash ~/anaconda.sh -b -p /opt/conda && \
-    rm ~/anaconda.sh
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
+    && wget --quiet https://repo.continuum.io/archive/Anaconda3-5.0.0.1-Linux-x86_64.sh -O ~/anaconda.sh \
+    && /bin/bash ~/anaconda.sh -b -p /opt/conda \
+    && rm ~/anaconda.sh
 
 ENV PATH /opt/conda/bin:$PATH
 
@@ -50,19 +48,19 @@ RUN mkdir ds
 ENV HOME=/ds
 ENV SHELL=/bin/bash
 
+# Sets the working directory in case 
+# you want to reference a specific file without absolute paths in another command
+WORKDIR /home/ds
+
 # Allow to share data between your docker container and the host computer.
 # When you save a docker image, any data in this VOLUME directory 
 # will not be saved as part of the image, however data that exists 
 # outside this directory in the container will be saved.
-VOLUME /ds
-
-# Sets the working directory in case 
-# you want to reference a specific file without absolute paths in another command
-WORKDIR /ds
+VOLUME ds
 
 # Copy files from the host computer into the docker container when the docker container is run.
-ADD run_jupyter.sh /ds/run_jupyter.sh
-RUN chmod +x /ds/run_jupyter.sh
+COPY run_jupyter.sh /home/ds/run_jupyter.sh
+RUN chmod +x run_jupyter.sh
 
 # There can only be one CMD instruction in a Dockerfile. 
 # If you list more than one CMD then only the last CMD will take effect.
